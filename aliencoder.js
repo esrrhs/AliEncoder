@@ -82,8 +82,7 @@
         inputArea = inputArea.trim();
         const len = inputArea.length;
         if (len <= 0) {
-            document.getElementById("outputArea").value = "";
-            return;
+            return "";
         }
         let key;
         for (i = 0; i < len; i++) {
@@ -125,12 +124,10 @@
         outputArea = outputArea.trim();
         const src = outputArea.split(/\s+/);
         if (src.length <= 0) {
-            document.getElementById("inputArea").value = "";
-            return;
+            return "";
         }
         if (src.length % 2 !== 0) {
-            document.getElementById("inputArea").value = "length error";
-            return;
+            return "length error";
         }
         const len = src.length / 2;
         let key;
@@ -146,13 +143,11 @@
             const lc = src[i + 1];
             const hindex = source_map[hc];
             if (hindex == null) {
-                document.getElementById("inputArea").value = "keyword error " + hc;
-                return;
+                return "keyword error " + hc;
             }
             const lindex = source_map[lc];
             if (lindex == null) {
-                document.getElementById("inputArea").value = "keyword error " + lc;
-                return;
+                return "keyword error " + lc;
             }
             let srchc;
             let srclc;

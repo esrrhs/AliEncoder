@@ -12,7 +12,31 @@
 </head>
 <body>
 <script src="aliencoder.js"></script>
+<script src="html2canvas.min.js"></script>
 <script>
+    function on_capture() {
+        let src = document.querySelector("#capture");
+        html2canvas(src).then(function (canvas) {
+            canvas.toBlob(function (blob) {
+                navigator.clipboard
+                    .write([
+                        new ClipboardItem(
+                            Object.defineProperty({}, blob.type, {
+                                value: blob,
+                                enumerable: true
+                            })
+                        )
+                    ])
+                    .then(function () {
+                        document.getElementById("btn_capture").innerText = "OK";
+                        setTimeout(function () {
+                            document.getElementById("btn_capture").innerText = "截屏";
+                        }, 1000);
+                    });
+            });
+        });
+    }
+
     function on_encode() {
         let inputArea = $("#inputArea").val();
         document.getElementById("outputArea").value = ALIEN.encode(inputArea);
@@ -24,21 +48,24 @@
     }
 </script>
 <div class="col align-self-center">
-    <div class="row mt-3"></div>
-    <label for="inputArea">原文</label>
-    <textarea class="form-control" id="inputArea" rows="20"></textarea>
+    <div id="capture">
+        <div class="row mt-3"></div>
+        <label for="inputArea">原文</label>
+        <textarea class="form-control" id="inputArea" rows="20"></textarea>
 
-    <div class="row mt-3"></div>
-    <button type="button" class="btn btn-primary btn-lg btn-block" id="encode" onclick="on_encode()">加密</button>
+        <div class="row mt-3"></div>
+        <button type="button" class="btn btn-primary btn-lg btn-block" id="encode" onclick="on_encode()">加密</button>
 
-    <div class="row mt-3"></div>
-    <label for="outputArea">密文</label>
-    <textarea class="form-control" id="outputArea" rows="20"></textarea>
+        <div class="row mt-3"></div>
+        <label for="outputArea">密文</label>
+        <textarea class="form-control" id="outputArea" rows="20"></textarea>
 
+        <div class="row mt-3"></div>
+        <button type="button" class="btn btn-primary btn-lg btn-block" id="decode" onclick="on_decode()">解密</button>
+    </div>
     <div class="row mt-3"></div>
-    <button type="button" class="btn btn-primary btn-lg btn-block" id="decode" onclick="on_decode()">解密</button>
+    <button type="button" class="btn btn-info" id="btn_capture" onclick="on_capture()">截屏</button>
 
-    <div class="row mt-3"></div>
 </div>
 </body>
 </html>
